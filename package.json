@@ -1,6 +1,6 @@
 {
   "name": "title-case-converter",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Convert selected text to proper title case using citation-style rules (AMA, with more styles planned).",
   "main": "main.js",
   "scripts": {
