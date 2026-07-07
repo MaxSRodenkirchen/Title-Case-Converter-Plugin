@@ -170,11 +170,82 @@ with only lowercase small words, leading/trailing whitespace).
   `replaceSelection` handles this by default — just verify it feels right).
 - Plugin ID: `title-case-converter`. Plugin name: `Title Case Converter`.
 
-## 7. Deliverables
+## 7. Distribution: Obsidian Community Plugins
+
+The plugin is intended to eventually be submitted to Obsidian's official
+Community Plugins directory, so build it to that standard from day one.
+
+### 7.1 Repo structure requirements
+
+- Public GitHub repo, one plugin per repo.
+- `manifest.json` at repo root with exactly these fields:
+  ```json
+  {
+    "id": "title-case-converter",
+    "name": "Title Case Converter",
+    "version": "1.0.0",
+    "minAppVersion": "1.4.0",
+    "description": "Convert selected text to proper title case using citation-style rules (AMA, with more styles planned).",
+    "author": "<your name>",
+    "authorUrl": "<optional>",
+    "isDesktopOnly": false
+  }
+  ```
+  - `id` must be unique, lowercase, hyphenated, and must not contain the
+    word "obsidian".
+  - `name` also must not contain "Obsidian" (branding guideline).
+  - Description should be plain, factual, no marketing language (per
+    Obsidian's plugin guidelines).
+- `versions.json` at repo root, mapping plugin version → minimum required
+  Obsidian app version, e.g.:
+  ```json
+  { "1.0.0": "1.4.0" }
+  ```
+- `README.md` (usage, screenshots/gif of the command in action, how to add
+  a style module for contributors) and a `LICENSE` file (MIT is the common
+  choice for Obsidian plugins).
+- `.gitignore` should exclude `node_modules`, `main.js` (build output does
+  **not** need to be committed to the repo — it's shipped via Releases, see
+  below), and `.DS_Store`.
+
+### 7.2 Release workflow
+
+Obsidian loads community plugins by downloading `main.js`, `manifest.json`
+(and `styles.css` if present) from the **assets of a GitHub Release**, not
+from the repo source directly. So:
+
+- Every version bump needs a GitHub Release whose **tag name matches the
+  version number exactly** (e.g. tag `1.0.0`, not `v1.0.0`), with `main.js`,
+  `manifest.json`, and `styles.css` (if used) attached as binary release
+  assets.
+- Set up a small GitHub Actions workflow (`.github/workflows/release.yml`)
+  that triggers on tag push, runs `npm run build`, and uploads the three
+  files to the release automatically — this avoids manual mistakes. Ask the
+  coding AI to include this workflow file as part of the deliverables.
+
+### 7.3 Submission to the directory
+
+- One-time step, done manually by you (not the coding AI): fork
+  `obsidianmd/obsidian-releases`, add an entry for the plugin to
+  `community-plugins.json`, open a PR. Obsidian's bot + a human reviewer
+  check guideline compliance (no `eval()`, no obfuscated code, no
+  unnecessary network requests, correct API usage, etc.).
+- Review turnaround varies (days to a few weeks). Once merged, the plugin
+  becomes installable via Obsidian's in-app Community Plugins browser, and
+  future releases (new tags) are picked up automatically without a new PR.
+- Until the PR is merged, you can already use and test the plugin locally
+  by copying `main.js`, `manifest.json` (and `styles.css`) into
+  `<vault>/.obsidian/plugins/title-case-converter/` — mention this as the
+  dev/testing install method in the README too.
+
+## 8. Deliverables
 
 - Full plugin source (`main.ts`, `src/styles/ama.ts`, `src/styles/index.ts`,
-  `src/settings.ts`, `manifest.json`, `package.json`, `esbuild.config.mjs`).
-- Short `README.md`: install instructions (manual install into
-  `.obsidian/plugins/`), usage, how to add a new style module.
+  `src/settings.ts`, `manifest.json`, `versions.json`, `package.json`,
+  `esbuild.config.mjs`).
+- `.github/workflows/release.yml` for automated release-asset builds.
+- `README.md` (install for use + install for development, usage, how to add
+  a new style module) and a `LICENSE` file (MIT).
 - Make sure `npm run build` produces a working `main.js` with no TypeScript
-  errors and no use of deprecated APIs.
+  errors and no use of deprecated APIs, and that the repo/manifest satisfy
+  the Community Plugin submission requirements in section 7.
