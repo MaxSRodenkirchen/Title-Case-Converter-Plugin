@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
+      attestations: write
 
     steps:
       - uses: actions/checkout@v4
@@ -25,11 +27,18 @@ jobs:
       - name: Build plugin
         run: npm run build
 
+      - name: Prepare assets
+        run: |
+          cp .obsidian/plugins/title-case-converter/main.js .
+          cp .obsidian/plugins/title-case-converter/manifest.json .
+
+      - name: Attest Build Provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: 'main.js'
+
       - name: Create Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cp .obsidian/plugins/title-case-converter/main.js .
-          cp .obsidian/plugins/title-case-converter/manifest.json .
-          # The GitHub release is created automatically, and the assets are uploaded.
           gh release create ${{ github.ref_name }} main.js manifest.json --title "${{ github.ref_name }}" --notes "Release ${{ github.ref_name }}"

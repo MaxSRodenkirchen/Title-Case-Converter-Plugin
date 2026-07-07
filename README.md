@@ -1,5 +1,7 @@
 # Obsidian Title Case Converter
 
+> **Note:** This plugin was programmed with the assistance of **Gemini 3.1 Pro (High)**.
+
 This plugin allows you to convert the selected text in your editor into proper title case according to specific citation styles. Currently, it supports the **AMA (American Medical Association)** style out of the box, with an architecture designed to make adding more styles trivial.
 
 ## Features
@@ -16,12 +18,16 @@ This plugin allows you to convert the selected text in your editor into proper t
 3. Search for and execute: `Convert selection to Title Case (AMA)`.
 4. Your text will be instantly converted!
 
-## Installation (for users)
+## Installation
 
-*(Once released to the Community Plugins directory, you will be able to install it directly from inside Obsidian).*
+You can install this plugin directly from within Obsidian:
+1. Open Obsidian **Settings**.
+2. Go to **Community Plugins** and disable "Safe Mode" if it is active.
+3. Click **Browse** and search for "Title Case Converter".
+4. Click **Install**, and once finished, click **Enable**.
 
-**Manual Installation:**
-1. Download the latest release (`main.js` and `manifest.json`) from the [Releases page](../../releases).
+**Manual Installation (for beta versions):**
+1. Download the latest release (`main.js` and `manifest.json`) from the [Releases page](https://github.com/MaxSRodenkirchen/Title-Case-Converter-Plugin/releases).
 2. Create a folder named `title-case-converter` in your vault's `.obsidian/plugins/` directory.
 3. Move the downloaded files into that folder.
 4. Reload Obsidian and enable the plugin in Settings -> Community Plugins.
